@@ -1,15 +1,17 @@
 html, body{
 	font-size:16px;
-	color: #dfdfdf;
-	background-color: #063647; 
+	color: #F0F0F0;
+	background-color: #0A4F63;
 }
 
 a {
-  color: #00d1b2;
+  color: #00FFC8;
+  font-weight: 500;
 }
 
 a:hover {
-  color: #00d1b2;
+  color: #00FFD4;
+  text-decoration: underline;
 }
 
 section{
@@ -18,28 +20,29 @@ section{
 }
 
 .section-1 {
-	background: #063647;
+	background: #0A4F63;
 }
 
 .section-2 {
-	background-color: #052D3D;
+	background-color: #031E2B;
 }
 
 .section-3 {
-	background-color: #0E282E;
+	background-color: #0D3D3D;
 }
 
 .section-4 {
-	background-color: #063647;
+	background-color: #0A4F63;
 	padding: 0.2rem;
 }
 
 a.nav-item {
-	color: #dfdfdf;
+	color: #F0F0F0;
+	font-weight: 500;
 }
 
 a.nav-item:hover {
-	color: #fff;
+	color: #00FFC8;
 }
 
 .avatar{
@@ -69,7 +72,7 @@ a.nav-item:hover {
 
 .box {
 	background-color: transparent;
-	border: 2px solid rgba(7, 59, 79, 0.5);
+	border: 3px solid rgba(0, 255, 200, 0.3);
 }
 
 .title {
@@ -90,7 +93,7 @@ a.nav-item:hover {
 
 @media screen and (max-width: 768px) {
 	.nav-menu {
-		background-color: #063647;
+		background-color: #0A4F63;
 	}
 
 	.nav-toggle:hover {
@@ -98,11 +101,11 @@ a.nav-item:hover {
 	}
 
 	.nav-toggle span {
-		background-color: #dfdfdf;
+		background-color: #F0F0F0;
 	}
 
 	.nav-toggle span:hover {
-		background-color: #fff;
+		background-color: #00FFC8;
 	}
 
 }
