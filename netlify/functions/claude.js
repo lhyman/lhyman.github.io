@@ -1,9 +1,15 @@
 const { auditKnowledge } = require('../../audits-data.js');
 
+// Normalize whitespace to reduce token count (OCR artifacts produce lots of extra spaces/blank lines)
+const normalizedKnowledge = auditKnowledge
+  .replace(/[ \t]+/g, ' ')
+  .replace(/\n{3,}/g, '\n\n')
+  .trim();
+
 const SYSTEM_PROMPT = `You are a helpful assistant that answers questions about Leonard Hyman's government performance audits. Use only the provided audit knowledge below to answer questions. If something isn't covered in the audits, say so. Be concise and accurate.
 
 Audit Knowledge:
-${auditKnowledge}
+${normalizedKnowledge}
 
 Guidelines:
 - Only answer about the audits listed

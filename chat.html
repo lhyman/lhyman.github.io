@@ -142,6 +142,7 @@
         addMessage(response, 'bot');
         conversationHistory.push({ role: 'assistant', content: response });
       } catch (error) {
+        conversationHistory.pop(); // remove the user message pushed before the failed call
         chatMessages.removeChild(typingDiv);
         addMessage('Sorry, there was an error. Please try again.', 'bot');
         console.error(error);
