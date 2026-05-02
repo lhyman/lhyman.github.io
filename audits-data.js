@@ -14787,3 +14787,5 @@ Director of Transportation , at 535-3845.
 
 
 `;
+
+if (typeof module !== 'undefined') module.exports = { auditKnowledge };
