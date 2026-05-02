@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     .chat-container {
       max-width: 800px;
@@ -110,11 +111,11 @@
     </div>
   </section>
 
-  <script src="audits-data.js"></script>
   <script>
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
+    const conversationHistory = [];
 
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
@@ -125,11 +126,10 @@
       const message = userInput.value.trim();
       if (!message) return;
 
-      // Add user message
       addMessage(message, 'user');
+      conversationHistory.push({ role: 'user', content: message });
       userInput.value = '';
 
-      // Show typing indicator
       const typingDiv = document.createElement('div');
       typingDiv.className = 'message bot';
       typingDiv.textContent = 'Thinking...';
@@ -137,9 +137,10 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
       try {
-        const response = await callClaudeAPI(message);
+        const response = await callClaudeAPI();
         chatMessages.removeChild(typingDiv);
         addMessage(response, 'bot');
+        conversationHistory.push({ role: 'assistant', content: response });
       } catch (error) {
         chatMessages.removeChild(typingDiv);
         addMessage('Sorry, there was an error. Please try again.', 'bot');
@@ -150,34 +151,20 @@
     function addMessage(text, sender) {
       const messageDiv = document.createElement('div');
       messageDiv.className = `message ${sender}`;
-      messageDiv.textContent = text;
+      if (sender === 'bot') {
+        messageDiv.innerHTML = marked.parse(text);
+      } else {
+        messageDiv.textContent = text;
+      }
       chatMessages.appendChild(messageDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    async function callClaudeAPI(userMessage) {
-      const systemPrompt = `You are a helpful assistant that answers questions about Leonard Hyman's government performance audits. Use only the provided audit knowledge below to answer questions. If something isn't covered in the audits, say so. Be concise and accurate.
-
-Audit Knowledge:
-${auditKnowledge}
-
-Guidelines:
-- Only answer about the audits listed
-- Include general background (e.g., San José is in California) if needed
-- Do not add external information not in the audits
-- Be conversational and helpful`;
-
+    async function callClaudeAPI() {
       const response = await fetch('/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: [
-            { role: 'user', content: userMessage }
-          ]
-        })
+        body: JSON.stringify({ messages: conversationHistory })
       });
 
       const data = await response.json();

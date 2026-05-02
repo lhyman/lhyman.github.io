@@ -1,3 +1,16 @@
+const { auditKnowledge } = require('../../audits-data.js');
+
+const SYSTEM_PROMPT = `You are a helpful assistant that answers questions about Leonard Hyman's government performance audits. Use only the provided audit knowledge below to answer questions. If something isn't covered in the audits, say so. Be concise and accurate.
+
+Audit Knowledge:
+${auditKnowledge}
+
+Guidelines:
+- Only answer about the audits listed
+- Include general background (e.g., San José is in California) if needed
+- Do not add external information not in the audits
+- Be conversational and helpful`;
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -23,9 +36,9 @@ exports.handler = async (event) => {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: body.model || 'claude-sonnet-4-6',
-      max_tokens: body.max_tokens || 1000,
-      system: body.system,
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
       messages: body.messages,
     }),
   });
