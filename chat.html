@@ -113,7 +113,7 @@
   <script src="audits-data.js"></script>
   <script>
     // IMPORTANT: Replace 'YOUR_API_KEY_HERE' with your actual Claude API key from https://console.anthropic.com/
-    const API_KEY = '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';
+    const API_KEY = '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';
 
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
@@ -178,8 +178,8 @@ Guidelines:
           'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-          model: 'claude-3-5-sonnet-20241022',
-          max_tokens_to_sample: 1000,
+          model: 'claude-opus-4-1',
+          max_tokens: 1000,
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userMessage }
