@@ -113,7 +113,7 @@
   <script src="audits-data.js"></script>
   <script>
     // IMPORTANT: Replace 'YOUR_API_KEY_HERE' with your actual Claude API key from https://console.anthropic.com/
-    const API_KEY = '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';
+    const API_KEY = 'YOUR_API_KEY_HERE';
 
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
@@ -179,20 +179,30 @@ Guidelines:
         },
         body: JSON.stringify({
           model: 'claude-3-5-sonnet-20241022',
-          max_tokens: 1000,
-          system: systemPrompt,
+          max_tokens_to_sample: 1000,
           messages: [
+            { role: 'system', content: systemPrompt },
             { role: 'user', content: userMessage }
           ]
         })
       });
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`API error: ${response.status} ${errorText}`);
       }
 
       const data = await response.json();
-      return data.content[0].text;
+      const text = data?.completion?.content?.[0]?.text ||
+        data?.message?.content?.parts?.[0] ||
+        data?.content?.[0]?.text;
+
+      if (!text) {
+        console.error('Unexpected Claude response:', data);
+        throw new Error('No text response from Claude');
+      }
+
+      return text;
     }
   </script>
 
