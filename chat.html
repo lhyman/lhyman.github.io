@@ -49,6 +49,29 @@
       line-height: 1.5;
     }
     .chat-disclaimer p + p { margin-top: 0.4rem; }
+    .chat-select-prompt {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .tag[data-audit-key] {
+      cursor: pointer;
+      transition: background var(--trans), border-color var(--trans), color var(--trans);
+    }
+    .tag[data-audit-key]:hover {
+      background: rgba(0, 255, 200, 0.15);
+      border-color: rgba(0, 255, 200, 0.5);
+      color: var(--cyan);
+    }
+    .tag.selected {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: var(--bg-deep);
+      font-weight: 600;
+    }
+    #chat-wrapper { display: none; }
     .chat-container {
       max-width: 800px;
       margin: 0 auto;
@@ -135,23 +158,25 @@
         <h2>Chat with My Audits</h2>
         <p class="section-desc">Government audits are often locked up in PDFs. What if you could ask an AI chatbot questions about audit findings directly? This demo makes my audits more accessible — just ask.</p>
 
+        <p class="chat-select-prompt">Which audit would you like to discuss?</p>
+
         <div class="chat-audit-groups">
           <div class="chat-audit-group">
             <div class="chat-audit-city">San José</div>
             <div class="chat-audit-tags">
-              <span class="tag">Vehicle Abatement</span>
-              <span class="tag">Towing Services</span>
-              <span class="tag">911 and 311</span>
-              <span class="tag">Development In-Lieu Fees</span>
-              <span class="tag">Development Work-in-Progress Reserves</span>
-              <span class="tag">Real Estate Services</span>
+              <span class="tag" data-audit-key="vehicle-abatement" data-audit-name="Vehicle Abatement">Vehicle Abatement</span>
+              <span class="tag" data-audit-key="towing" data-audit-name="Towing Services">Towing Services</span>
+              <span class="tag" data-audit-key="911-311" data-audit-name="911 and 311">911 and 311</span>
+              <span class="tag" data-audit-key="in-lieu-fees" data-audit-name="Development In-Lieu Fees">Development In-Lieu Fees</span>
+              <span class="tag" data-audit-key="work-in-progress" data-audit-name="Development Work-in-Progress Reserves">Development Work-in-Progress Reserves</span>
+              <span class="tag" data-audit-key="real-estate" data-audit-name="Real Estate Services">Real Estate Services</span>
             </div>
           </div>
           <div class="chat-audit-group">
             <div class="chat-audit-city">Port of Los Angeles</div>
             <div class="chat-audit-tags">
-              <span class="tag">Clean Truck Fund Rate</span>
-              <span class="tag">Lane Victory Permit Compliance</span>
+              <span class="tag" data-audit-key="clean-truck-fund" data-audit-name="Clean Truck Fund Rate">Clean Truck Fund Rate</span>
+              <span class="tag" data-audit-key="lane-victory" data-audit-name="Lane Victory Permit Compliance">Lane Victory Permit Compliance</span>
             </div>
           </div>
         </div>
@@ -162,13 +187,13 @@
         </div>
       </div>
 
-      <div class="chat-container">
-        <div id="chat-messages" class="chat-messages">
-          <div class="message bot">Hello! I'm here to help you learn about Leonard Hyman's government audits. Ask me anything about the findings, recommendations, or data from his work in San José and the Port of Los Angeles. What would you like to know?</div>
-        </div>
-        <div class="chat-input">
-          <input type="text" id="user-input" placeholder="Ask about the audits..." />
-          <button id="send-button">Send</button>
+      <div id="chat-wrapper">
+        <div class="chat-container">
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Ask about the audit..." />
+            <button id="send-button">Send</button>
+          </div>
         </div>
       </div>
     </div>
@@ -178,7 +203,27 @@
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
-    const conversationHistory = [];
+    const chatWrapper = document.getElementById('chat-wrapper');
+    let conversationHistory = [];
+    let selectedAuditKey = null;
+
+    // Audit selection
+    document.querySelectorAll('.tag[data-audit-key]').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.querySelectorAll('.tag[data-audit-key]').forEach(t => t.classList.remove('selected'));
+        tag.classList.add('selected');
+
+        selectedAuditKey = tag.dataset.auditKey;
+        const auditName = tag.dataset.auditName;
+
+        conversationHistory = [];
+        chatMessages.innerHTML = '';
+        chatWrapper.style.display = 'block';
+        chatWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        addMessage(`Great! Let's discuss the **${auditName}** audit. What would you like to know?`, 'bot');
+      });
+    });
 
     sendButton.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
@@ -187,7 +232,7 @@
 
     async function sendMessage() {
       const message = userInput.value.trim();
-      if (!message) return;
+      if (!message || !selectedAuditKey) return;
 
       addMessage(message, 'user');
       conversationHistory.push({ role: 'user', content: message });
@@ -205,7 +250,7 @@
         addMessage(response, 'bot');
         conversationHistory.push({ role: 'assistant', content: response });
       } catch (error) {
-        conversationHistory.pop(); // remove the user message pushed before the failed call
+        conversationHistory.pop();
         chatMessages.removeChild(typingDiv);
         addMessage('Sorry, there was an error. Please try again.', 'bot');
         console.error(error);
@@ -228,7 +273,7 @@
       const response = await fetch('/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: conversationHistory })
+        body: JSON.stringify({ messages: conversationHistory, auditKey: selectedAuditKey })
       });
 
       const data = await response.json();

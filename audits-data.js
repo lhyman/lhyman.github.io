@@ -1,11 +1,10 @@
-const auditKnowledge = `
-Leonard Hyman is a government performance auditor. Below are summaries of all eight audits he has worked on, with full findings, statistics, and recommendations.
+const audits = {
 
-=============================================================
-AUDIT 1: SS LANE VICTORY
+  'lane-victory': {
+    name: 'Lane Victory Permit Compliance',
+    data: `AUDIT: SS LANE VICTORY
 Report 23-003 | Port of Los Angeles, Harbor Department Internal Audit Division | September 11, 2025
 Auditors: Leonard Hyman, CIA, MPP (Auditor-in-Charge); Barbara J. Steelman, CIA, CMA, MBA (Director of Internal Audit)
-=============================================================
 
 BACKGROUND:
 The SS Lane Victory is a WWII-era merchant marine vessel berthed at the Port of Los Angeles. The U.S. Merchant Marine Veterans of World War II (USMMVWWII), a nonprofit, has operated the ship since acquiring it in 1988. The Port provides free berth space valued at ~$37,700/month in recognition of the ship's historic value as a National Historic Landmark. The permit requires the ship to operate as a public museum, host training exercises, serve as a filming location, and conduct at least two fundraising sailings per year within Los Angeles Harbor. The audit assessed permit compliance, financial viability, and public benefit.
@@ -36,14 +35,14 @@ RECOMMENDATIONS:
 
 MANAGEMENT RESPONSE:
 - USMMVWWII acknowledged findings but disputed characterization of limited public benefit; cited ship's role as one of only two remaining Victory-class ships built at the Port of Los Angeles during WWII, and its connection to Lane College (an HBCU).
-- WCRED agreed to all recommendations: will update insurance, monitor public benefit, and require performance measures in renewed permit.
+- WCRED agreed to all recommendations: will update insurance, monitor public benefit, and require performance measures in renewed permit.`,
+  },
 
-
-=============================================================
-AUDIT 2: 9-1-1 AND 3-1-1 CALL HANDLING
+  '911-311': {
+    name: '911 and 311',
+    data: `AUDIT: 9-1-1 AND 3-1-1 CALL HANDLING
 Report 19-01 | City of San José, Office of the City Auditor | February 2019
 City Auditor: Sharon W. Erickson | Audit Staff: Gitanjali Mandrekar, Alison McInnis Pauly, Chris Bernedo, Leonard Hyman, Jourdan Janssen, Robert Rodrock
-=============================================================
 
 BACKGROUND:
 San José's 9-1-1 Emergency Communications Center (Police Communications) serves as the City's Primary Public Safety Answering Point (PSAP). Police Communications handles 9-1-1, non-emergency, and 3-1-1 calls; fire/medical calls are transferred to Fire Communications (Secondary PSAP). The audit was prompted by Councilmember concerns about answering times, vacancies, and customer service. FY 2018-19 budget: Police Communications $26.6M (162.5 FTE); Fire Communications $7.5M (45.48 FTE). Total calls received by the center: ~1.1 million in FY 2017-18 (1.3M including Fire).
@@ -91,14 +90,14 @@ FINDING 4: City Could Improve Customer Service for Non-Emergency Calls and Bette
 - Recommendations: Fix IVR, add language services, work with carriers to enable 3-1-1 on all wireless phones, explore moving 3-1-1 to City Customer Contact Center
 
 TOTAL RECOMMENDATIONS: 19
-MANAGEMENT RESPONSE: Administration agreed with all 4 findings; all 19 recommendations accepted (green/yellow status); target dates April 2019–December 2020.
+MANAGEMENT RESPONSE: Administration agreed with all 4 findings; all 19 recommendations accepted (green/yellow status); target dates April 2019–December 2020.`,
+  },
 
-
-=============================================================
-AUDIT 3: TOWING SERVICES
+  'towing': {
+    name: 'Towing Services',
+    data: `AUDIT: TOWING SERVICES
 Report 18-10 | City of San José, Office of the City Auditor | December 2018
 City Auditor: Sharon W. Erickson | Audit Staff: Alison McInnis Pauly, Chris Bernedo, Leonard Hyman, Tiffany Zhu (Stanford in Government Fellow)
-=============================================================
 
 BACKGROUND:
 San José contracts with 6 tow companies, one per geographic zone, to remove vehicles from public streets. In FY 2017-18, ~15,700 vehicles were towed (up 1,200 from prior year). The City receives $800,000+ annually from Santa Clara County Abandoned Vehicle Abatement Service Authority (AVASA) reimbursements. This was the second audit in a series on vehicle abatement and towing (first audit, Report 18-04, focused on vehicle abatement).
@@ -142,14 +141,14 @@ FINDING 5: City Should Consolidate and Improve Program Oversight
 - Recommendation: consolidate oversight, improve data systems, re-establish City sign-off for low-value vehicle disposal
 
 TOTAL RECOMMENDATIONS: 17+
-MANAGEMENT RESPONSE: Administration acknowledged need for program reform; committed to RFP process for new towing agreements incorporating recommendations.
+MANAGEMENT RESPONSE: Administration acknowledged need for program reform; committed to RFP process for new towing agreements incorporating recommendations.`,
+  },
 
-
-=============================================================
-AUDIT 4: VEHICLE ABATEMENT
+  'vehicle-abatement': {
+    name: 'Vehicle Abatement',
+    data: `AUDIT: VEHICLE ABATEMENT
 Report 18-04 | City of San José, Office of the City Auditor | August 2018
 City Auditor: Sharon W. Erickson | Audit Staff: Alison McInnis Pauly, Chris Bernedo, Leonard Hyman
-=============================================================
 
 BACKGROUND:
 San José operates a complaint-driven program to remove inoperable, abandoned, or long-stored vehicles from public streets. Multiple departments are involved: Department of Transportation (DOT), Planning/Building/Code Enforcement (PBCE), Police, and Housing. In FY 2017-18, DOT responded to 55,000 service requests — more than triple the volume from FY 2010-11 — while staffing remained nearly constant. The My San Jose app launched July 31, 2017, reducing duplicate requests by more than half.
@@ -182,14 +181,14 @@ FINDING 4: Vehicle Release Fee Should Be Reevaluated
 - Recommendation: recalculate fee based on realistic staffing mix; consider subsidizing for low-income vehicle owners
 
 TOTAL RECOMMENDATIONS: 12
-MANAGEMENT RESPONSE: Administration agreed with findings; committed to performance targets, communication improvements through My San Jose 2.0, improved inhabited vehicle coordination, and Police review of vehicle release fee structure.
+MANAGEMENT RESPONSE: Administration agreed with findings; committed to performance targets, communication improvements through My San Jose 2.0, improved inhabited vehicle coordination, and Police review of vehicle release fee structure.`,
+  },
 
-
-=============================================================
-AUDIT 5: DEVELOPMENT PARTNERS' WORK-IN-PROGRESS RESERVES
+  'work-in-progress': {
+    name: 'Development Work-in-Progress Reserves',
+    data: `AUDIT: DEVELOPMENT PARTNERS' WORK-IN-PROGRESS RESERVES
 Report 20-05 | City of San José, Office of the City Auditor | September 2020
 City Auditor: Joe Rois | Audit Staff: Caroline Wurden, Leonard Hyman
-=============================================================
 
 BACKGROUND:
 San José's Development Partners — Planning, Building and Code Enforcement (PBCE); Public Works; and the Fire Department — issue building permits, conduct inspections, and provide plan reviews. In FY 2018-19 they issued 38,700 permits, served ~59,000 Permit Center customers, and processed ~2,200 planning applications. Development fees fund this work. The audit reviewed how Development Partners track fee "work-in-progress" reserves — funds collected for projects not yet completed. FY 2020-21 overall cost recovery rate: ~86% (range: 81%–93%). In April 2020, Council cut Public Works' reserve by $3.5M and Planning's by $1.75M due to COVID-19 budget impacts.
@@ -220,14 +219,14 @@ RECOMMENDATIONS:
 4. All Development Partners should work with Budget Office and City Attorney to develop reserve policies distinguishing work-in-progress from surplus funds.
 5. Finance Department should work with external auditors to determine proper accounting treatment of collected fees for in-progress projects.
 
-MANAGEMENT RESPONSE: Administration agreed with all 5 recommendations. Targets: Recs 1–3 by Sept 30, 2021; Rec 4 by Sept 30, 2021; Rec 5 by Dec 31, 2021. Planning noted 179% improvement in time tracking after AMANDA 7 upgrade (November 2019).
+MANAGEMENT RESPONSE: Administration agreed with all 5 recommendations. Targets: Recs 1–3 by Sept 30, 2021; Rec 4 by Sept 30, 2021; Rec 5 by Dec 31, 2021. Planning noted 179% improvement in time tracking after AMANDA 7 upgrade (November 2019).`,
+  },
 
-
-=============================================================
-AUDIT 6: REAL ESTATE SERVICES
+  'real-estate': {
+    name: 'Real Estate Services',
+    data: `AUDIT: REAL ESTATE SERVICES
 Report 21-03 | City of San José, Office of the City Auditor | May 2021
 City Auditor: Joe Rois | Audit Staff: Caroline Wurden, Leonard Hyman, Vicki Sun
-=============================================================
 
 BACKGROUND:
 San José owns more than 1,250 parcels of land. More than 50% is Open Space/Parklands/Habitat; 25%+ is Public/Quasi-Public. Net book value: $3 billion. Real Estate Services Division (Real Estate), part of the Office of Economic Development, handles lease administration, property acquisitions, and sales; 4 staff plus manager; FY 2020-21 budget: $2.6M. Annual revenues: $3M from 32 property leases and 23 telecom leases; FY 2019-20 sales revenue: $5.4M (including $4.75M for a 0.3-acre downtown parcel). Five-year revenue range: $4M–$8.3M.
@@ -271,15 +270,15 @@ RECOMMENDATIONS:
 5. After completing market rate analysis, Real Estate should bring updated telecom fee schedule recommendations to City Council.
 6. Real Estate and City Attorney should update Council Policy 7-13 and Municipal Code Chapter 4.20 for Surplus Land Act compliance.
 
-MANAGEMENT RESPONSE: Agreed with all 6 recommendations. RFP for asset management software in progress (software selection Q3 2021; buildout Q1 2022). Annual vacant property reporting target: Q2 2022. Telecom consultant study underway (target Q4 2021). Municipal Code/Policy 7-13 revisions target: Q4 2021.
+MANAGEMENT RESPONSE: Agreed with all 6 recommendations. RFP for asset management software in progress (software selection Q3 2021; buildout Q1 2022). Annual vacant property reporting target: Q2 2022. Telecom consultant study underway (target Q4 2021). Municipal Code/Policy 7-13 revisions target: Q4 2021.`,
+  },
 
-
-=============================================================
-AUDIT 7: CLEAN TRUCK FUND RATE
+  'clean-truck-fund': {
+    name: 'Clean Truck Fund Rate',
+    data: `AUDIT: CLEAN TRUCK FUND RATE
 Report 24-008 | Port of Los Angeles, Harbor Department Internal Audit Division | March 18, 2025
 Auditors: Leonard Hyman, Internal Auditor II (Auditor-in-Charge); Barbara Steelman, Director of Internal Audit
 Collaborating: Long Beach City Auditor's Office (Alvin Chu, Briana Frias)
-=============================================================
 
 BACKGROUND:
 To address air quality impacts from port operations, the Ports of Los Angeles and Long Beach adopted the Clean Air Action Plan (CAAP). The Clean Truck Fund (CTF) Rate, approved by the Board in 2020 and started April 2022, collects revenue from cargo owners to fund zero-emission truck adoption. Rate: $10/TEU (twenty-foot equivalent unit); $20 for containers longer than 20 feet. Zero-emission and low-NOx trucks are exempt. Goal: zero-emission drayage truck fleet by 2035. Over the audit period (April 2022–October 2024): $105 million in net revenue received. Average monthly: $3.4M gross, $110K PortCheck expenses, $3.3M net remitted.
@@ -324,14 +323,14 @@ RECOMMENDATIONS:
 4b. Require CALSTART to verify both signatures.
 4c. Review prior vouchers signed by lessees only; obtain missing purchaser signatures.
 
-MANAGEMENT RESPONSE: Management accepted all recommendations. Corrective action on leased truck vouchers already underway (Board approved amendment; City Council approval pending).
+MANAGEMENT RESPONSE: Management accepted all recommendations. Corrective action on leased truck vouchers already underway (Board approved amendment; City Council approval pending).`,
+  },
 
-
-=============================================================
-AUDIT 8: STREET AND UTILITY IN-LIEU FEES
+  'in-lieu-fees': {
+    name: 'Development In-Lieu Fees',
+    data: `AUDIT: STREET AND UTILITY IN-LIEU FEES
 Report 19-08 | City of San José, Office of the City Auditor | September 2019
 City Auditor: Joe Rois | Audit Staff: Alison Pauly, Stephanie Noble, Leonard Hyman
-=============================================================
 
 BACKGROUND:
 New development strains City infrastructure. Developers must either construct required public improvements or pay "in-lieu fees" (mitigation/impact fees) as a permit condition, governed by California's Mitigation Fee Act. This audit reviewed collection, tracking, and use of street and utility in-lieu fees, including: traffic impact fees (TIFs), utility undergrounding fees, traffic signal fees, landscaped median island fees, street improvement fees, and storm collection system fees. These are collected by Public Works and tracked/used by Public Works and DOT.
@@ -400,7 +399,9 @@ RECOMMENDATIONS:
 7. Public Works should review the undergrounding base fee against actual costs.
 8. Public Works and DOT should improve transparency around TIF waivers and incentive programs.
 
-MANAGEMENT RESPONSE: Administration agreed; both departments committed to improving tracking, coordination, documentation, and fee accuracy. Finance committed to reviewing Depositor Fund. Administration acknowledged additional funding would be needed for more aggressive undergrounding.
-`;
+MANAGEMENT RESPONSE: Administration agreed; both departments committed to improving tracking, coordination, documentation, and fee accuracy. Finance committed to reviewing Depositor Fund. Administration acknowledged additional funding would be needed for more aggressive undergrounding.`,
+  },
 
-if (typeof module !== 'undefined') module.exports = { auditKnowledge };
+};
+
+if (typeof module !== 'undefined') module.exports = { audits };
